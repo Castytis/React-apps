@@ -21,7 +21,7 @@ function Expenses(props) {
   
 
   return (
-    <div>
+    <li>
       <Card className="expenses">
         <ExpensesFilter
           selected={filteredYear}
@@ -31,7 +31,7 @@ function Expenses(props) {
           expenses={filterExpenses}
         />
       </Card>
-    </div>
+    </li>
   );
 }
 

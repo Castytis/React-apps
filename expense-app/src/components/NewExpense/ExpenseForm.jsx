@@ -24,8 +24,7 @@ function ExpenseForm(props) {
       amount: amount,
       date: new Date(date),
     };
-
-    props.onSaveExpenseData(expenseData)
+    props.onSaveExpenseData(expenseData);
 
     setTitle("");
     setAmount("");
@@ -63,6 +62,7 @@ function ExpenseForm(props) {
         </div>
       </div>
       <div className="new-expense__actions">
+        <button onClick={props.cancelExpense}>Cancel</button>
         <button type="submit">Add Expense</button>
       </div>
     </form>
