@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
 
-const InfoForm = () => {
+const InfoForm = (props) => {
   const [username, setUsername] = useState("");
   const [age, setAge] = useState("");
 
@@ -16,10 +16,11 @@ const InfoForm = () => {
 
   const addUserHandler = (event) => {
     const userData = {
+      id: Math.random().toString(),  
       username: username,
       age: age,
     };
-    console.log(userData);
+    props.onAddUser(userData)
 
     setUsername('')
     setAge('')
