@@ -12,10 +12,19 @@ const addUserHandler = (user) => {
   })
 }
 
+const deleteUserHandler = (userId) => {
+  setUsers((prevUsers) => {
+    const updatedUsers = prevUsers.filter((user) => {
+      return (user.id !== userId)
+    })
+    return updatedUsers
+  })
+}
+
   return (
     <div>
       <InfoForm onAddUser={addUserHandler} />
-      <UsersList users={users} />
+      <UsersList users={users} onDeleteUser={deleteUserHandler} />
     </div>
   );
 }

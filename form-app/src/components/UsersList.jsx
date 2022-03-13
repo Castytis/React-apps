@@ -10,7 +10,15 @@ const UsersList = (props) => {
         <Col xs={6}>
           <ListGroup>
             {props.users.map((user) => {
-              return <UserListItem key={user.id} username={user.username} age={user.age} />;
+              return (
+                <UserListItem
+                  key={user.id}
+                  id={user.id}
+                  username={user.username}
+                  age={user.age}
+                  onDeleteUser={props.onDeleteUser}
+                />
+              );
             })}
           </ListGroup>
         </Col>
