@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import AlertComponent from "./AlertComponent";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
 
 const InfoForm = (props) => {
   const [username, setUsername] = useState("");
   const [age, setAge] = useState("");
+  const [alert, setAlert] = useState();
 
   const usernameHandler = (event) => {
     setUsername(event.target.value);
@@ -15,20 +17,49 @@ const InfoForm = (props) => {
   };
 
   const addUserHandler = (event) => {
+    event.preventDefault();
+
+    if (username.trim().length === 0 || age.trim().length === 0) {
+      setAlert({
+        title: "Invalid input",
+        message: "Please enter a valid username and age.",
+      });
+      return;
+    }
+
+    // + to make string into a number
+    if (+age < 1) {
+      setAlert({
+        title: "Invalid input",
+        message: "Please enter a valid age.",
+      });
+      return;
+    }
+
     const userData = {
-      id: Math.random().toString(),  
+      id: Math.random().toString(),
       username: username,
       age: age,
     };
-    props.onAddUser(userData)
+    props.onAddUser(userData);
 
-    setUsername('')
-    setAge('')
-    event.preventDefault();
+    setUsername("");
+    setAge("");
+  };
+
+  const alertHandler = () => {
+    setAlert(null);
   };
 
   return (
     <div>
+      {alert && (
+        <AlertComponent
+          title={alert.title}
+          message={alert.message}
+          onConfirm={alertHandler}
+        />
+      )}
       <Container>
         <Row className="justify-content-md-center">
           <Col xs={6}>
