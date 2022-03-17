@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Alert } from "react-bootstrap";
 
-function AlertModal(props) {
+function AlertComponent(props) {
     
   return (
     <Alert variant="danger" onClose={props.onConfirm} dismissible>
@@ -12,4 +12,4 @@ function AlertModal(props) {
   );
 }
 
-export default AlertModal;
+export default AlertComponent;
