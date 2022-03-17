@@ -8,6 +8,8 @@ import Checkout from "./Checkout";
 const Cart = (props) => {
   const [isCheckout, setIsCheckout] = useState(false);
   const cartCtx = useContext(CartContext);
+  const [isSubmiting, setIsSubmiting] = useState(false);
+  const [didSubmit, setDidSubmit] = useState(false);
 
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
@@ -22,6 +24,24 @@ const Cart = (props) => {
 
   const orderHandler = () => {
     setIsCheckout(true);
+  };
+
+  const submitOrderHandler = async (userData) => {
+    setIsSubmiting(true);
+    await fetch(
+      "https://ract-app-b1adb-default-rtdb.europe-west1.firebasedatabase.app/orders.json",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          user: userData,
+          orderedItems: cartCtx.items,
+        }),
+      }
+    );
+    setIsSubmiting(false);
+    setDidSubmit(true);
+
+    cartCtx.clearCart()
   };
 
   const cartItems = (
@@ -54,17 +74,36 @@ const Cart = (props) => {
     </div>
   );
 
-  return (
-    <Modal onClose={props.onClose}>
+  const cartModalContent = (
+    <React.Fragment>
       {cartItems}
       <div className={classes.total}>
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
-      {isCheckout && <Checkout onCancel={props.onClose} />}
+      {isCheckout && (
+        <Checkout onConfirm={submitOrderHandler} onCancel={props.onClose} />
+      )}
       {!isCheckout && modalActions}
-    </Modal>
+    </React.Fragment>
   );
+
+  const isSubmitingModalContent = <p>Sending order data...</p>
+
+  const didSubmitModalContent = <React.Fragment>
+    <p>Successfully sent the order!</p>
+    <div className={classes.actions}>
+      <button className={classes.button} onClick={props.onClose}>
+        Close
+      </button>
+    </div>
+    </React.Fragment>
+
+  return <Modal onClose={props.onClose}>
+    {!isSubmiting && !didSubmit && cartModalContent}
+    {isSubmiting && isSubmitingModalContent}
+    {didSubmit && didSubmitModalContent}
+  </Modal>;
 };
 
 export default Cart;
