@@ -1,12 +1,22 @@
-import React from 'react'
-import Cart from './components/Cart/Cart';
-import Layout from './components/Layout/Layout';
-import Products from './components/Shop/Products';
-import {useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import Cart from "./components/Cart/Cart";
+import Layout from "./components/Layout/Layout";
+import Products from "./components/Shop/Products";
+import { useSelector } from "react-redux";
 
 function App() {
+  const showCart = useSelector((state) => state.ui.cartIsVisible);
+  const cart = useSelector((state) => state.cart);
 
-  const showCart = useSelector((state) => state.ui.cartIsVisible)
+  useEffect(() => {
+    fetch(
+      "https://ract-app-b1adb-default-rtdb.europe-west1.firebasedatabase.app/cart.json",
+      {
+        method: "PUT",
+        body: JSON.stringify(cart),
+      }
+    );
+  }, [cart]);
 
   return (
     <Layout>
