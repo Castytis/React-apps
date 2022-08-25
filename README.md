@@ -1,3 +1,3 @@
-# React-apps
+# React applications
 
 Various React applications
